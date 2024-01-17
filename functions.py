@@ -2,25 +2,23 @@ import numpy as np
 
 # Training set for XOR
 
-X = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
+training_data = np.array([[1, 1]])
 Y = np.array([[0], [1], [1], [0]])
 
 class NeuralNetwork():
-    def __init__(self):
+    def __init__(self, layers):
         self.weights = []
         self.biases = []
-        
-    def AddLayers(self, layers):
+
         if type(layers) != list:
             raise TypeError
-        elif len(layers) < 3:
+        elif len(layers) < 2:
             raise TypeError
         self.layers = layers
-        return True
 
     def loadWeights(self, inputWeights = None):
         if inputWeights:
-            raise NotImplementedError
+            self.weights = inputWeights
         else:
             for i,v in enumerate(self.layers[:-1]):
                 # Weights
@@ -31,13 +29,15 @@ class NeuralNetwork():
     def sigmoid(self, x):
         return 1 / (1 + np.exp(-x))
 
-    def forwardprop(self, X):
+    def forwardprop(self, input):
 
         weights, biases = self.weights, self.biases
+        
+        cache = [input.T]
 
-        cache = [X.T]
         for i in range(len(weights)):
             cache.append(np.dot(weights[i], cache[-1]) + biases[i])
+
             cache.append(self.sigmoid(cache[-1]))
 
         return cache[-1], cache
@@ -46,9 +46,9 @@ class NeuralNetwork():
 
 
 
-nn1 = NeuralNetwork()
-nn1.AddLayers([2, 3, 1])
-nn1.loadWeights()
-result, cache = nn1.forwardprop(np.array([[0], [0]]))
+nn1 = NeuralNetwork([2,3,1])
 
-print(result)
+nn1.loadWeights()
+result, cache = nn1.forwardprop(training_data)
+
+print(cache)
