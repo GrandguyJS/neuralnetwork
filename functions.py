@@ -96,8 +96,8 @@ n = 3   # First n trainign sets
 X_train = X[0:n]
 Y_train_results = Y[0:n]
 
-X_test = X[2:]
-Y_test_results = Y[2:]
+X_test = X[n:]
+Y_test_results = Y[n:]
 
 # Object nn1
 
